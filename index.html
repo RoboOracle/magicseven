@@ -1,60 +1,118 @@
-html
-
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisunya Method Calculator</title>
+    <title>Калькулятор Магическая Семёрка</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f9; }
-        h1 { color: #2c3e50; }
-        label { display: block; margin: 10px 0 5px; font-weight: bold; }
-        input { padding: 8px; width: 200px; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 10px 20px; margin: 10px 0; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #2980b9; }
-        #result { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background: white; }
-        .arcana { color: #8e44ad; font-weight: bold; }
-        .section { margin-bottom: 15px; }
+        body {
+            font-family: 'Georgia', serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e1b4d, #2a2a72);
+            color: #e0e0ff;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #d4a5ff;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #d4a5ff;
+        }
+        input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #d4a5ff;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 15px 0;
+            background: linear-gradient(45deg, #8e44ad, #d4a5ff);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #732d8a, #b57edc);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .arcana {
+            color: #ffccff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            input, button { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
-    <h1>Kisunya Method Calculator</h1>
+    <h1>Калькулятор «Магическая Семёрка»</h1>
     <form id="calcForm">
-        <label for="age">Enter Age:</label>
+        <label for="age">Введите возраст:</label>
         <input type="number" id="age" min="0" required>
-        <label for="year">Enter Year:</label>
+        <label for="year">Введите год:</label>
         <input type="number" id="year" min="1900" required>
-        <button type="submit">Calculate</button>
+        <button type="submit">Рассчитать</button>
     </form>
     <div id="result"></div>
 
     <script>
-        // Tarot Arcana interpretations
+        // Tarot Arcana interpretations (in Russian)
         const arcana = {
-            0: { name: "The Fool", meaning: "New beginnings, spontaneity, leap of faith. Challenges: avoid recklessness or naivety.", shadow: "Fear of change, stagnation.", wealth: "Success through bold risks, but not guaranteed wealth." },
-            1: { name: "The Magician", meaning: "Mastery, initiative, charisma. Challenges: avoid manipulation or impulsiveness.", shadow: "Overconfidence, deceit.", wealth: "High potential for success through skill and strategy." },
-            2: { name: "The High Priestess", meaning: "Intuition, secrets, wisdom. Challenges: avoid paranoia or emotional suppression.", shadow: "Fear of losing control, ignoring intuition.", wealth: "Success through wise, discreet decisions, not instant wealth." },
-            3: { name: "The Empress", meaning: "Creativity, abundance, nurturing. Challenges: balance ambition with care.", shadow: "Fear of stagnation, overambition.", wealth: "High potential for wealth through creativity or legacy." },
-            4: { name: "The Emperor", meaning: "Authority, structure, leadership. Challenges: avoid rigidity or control issues.", shadow: "Tyranny, inflexibility.", wealth: "Success through leadership and stability." },
-            5: { name: "The Hierophant", meaning: "Tradition, wisdom, guidance. Challenges: avoid conforming too much or resisting advice.", shadow: "Dogmatism, rebellion.", wealth: "Success through knowledge and structure, not quick gains." },
-            6: { name: "The Lovers", meaning: "Partnerships, choices, harmony. Challenges: balance relationships and personal goals.", shadow: "Indecision, conflict.", wealth: "Success through collaboration, less direct wealth." },
-            7: { name: "The Chariot", meaning: "Victory, determination, control. Challenges: maintain focus, avoid aggression.", shadow: "Lack of direction, impulsiveness.", wealth: "High potential for success through drive and focus." },
-            8: { name: "Justice", meaning: "Balance, karma, truth. Challenges: make fair decisions, accept consequences.", shadow: "Injustice, avoidance of responsibility.", wealth: "Success through ethical choices, stable gains." },
-            9: { name: "The Hermit", meaning: "Solitude, wisdom, introspection. Challenges: avoid isolation or overthinking.", shadow: "Fear of loneliness, withdrawal.", wealth: "Success through knowledge, not instant wealth." },
-            10: { name: "Wheel of Fortune", meaning: "Luck, cycles, turning points. Challenges: adapt to change, embrace uncertainty.", shadow: "Resistance to change, bad luck.", wealth: "High potential for wealth or success, like 'got rich'." },
-            11: { name: "Strength", meaning: "Courage, inner strength, compassion. Challenges: control emotions, avoid arrogance.", shadow: "Weakness, self-doubt.", wealth: "Success through resilience, steady gains." },
-            12: { name: "The Hanged Man", meaning: "Pause, sacrifice, new perspective. Challenges: let go of control, embrace surrender.", shadow: "Stagnation, resistance to change.", wealth: "Success through reevaluation, not quick gains." },
-            13: { name: "Death", meaning: "Transformation, endings, renewal. Challenges: accept change, release the past.", shadow: "Fear of change, clinging to old ways.", wealth: "Success through transformation, potential for new wealth." },
-            14: { name: "Temperance", meaning: "Balance, harmony, patience. Challenges: find equilibrium, avoid extremes.", shadow: "Imbalance, impatience.", wealth: "Stable success through balance, not sudden wealth." },
-            15: { name: "The Devil", meaning: "Temptation, materialism, freedom. Challenges: break free from unhealthy patterns.", shadow: "Addiction, entrapment.", wealth: "Potential for wealth, but risks of materialism." },
-            16: { name: "The Tower", meaning: "Sudden change, upheaval, revelation. Challenges: rebuild after disruption.", shadow: "Fear of collapse, denial.", wealth: "Potential for gains after chaos, high risk." },
-            17: { name: "The Star", meaning: "Hope, inspiration, healing. Challenges: maintain faith, avoid disillusionment.", shadow: "Hopelessness, despair.", wealth: "Success through optimism, gradual gains." },
-            18: { name: "The Moon", meaning: "Illusion, intuition, dreams. Challenges: navigate uncertainty, avoid deception.", shadow: "Confusion, fear of the unknown.", wealth: "Success through intuition, not direct wealth." },
-            19: { name: "The Sun", meaning: "Success, joy, vitality. Challenges: balance ego with humility.", shadow: "Arrogance, lack of clarity.", wealth: "High potential for wealth or triumph, like 'got rich'." },
-            20: { name: "Judgement", meaning: "Awakening, renewal, purpose. Challenges: embrace transformation, avoid judgment.", shadow: "Self-doubt, resistance to growth.", wealth: "Success through renewal, long-term gains." },
-            21: { name: "The World", meaning: "Completion, fulfillment, unity. Challenges: embrace success, prepare for new cycles.", shadow: "Incompletion, lack of closure.", wealth: "High potential for fulfillment and wealth." },
-            22: { name: "The Fool (22)", meaning: "Same as The Fool (0), with greater spiritual significance.", shadow: "Same as The Fool.", wealth: "Success through bold risks, not guaranteed wealth." }
+            0: { name: "Шут", meaning: "Новые начинания, спонтанность, прыжок веры. Испытания: избегайте безрассудства или наивности.", shadow: "Страх перемен, застой.", wealth: "Успех через смелые риски, но богатство не гарантировано." },
+            1: { name: "Маг", meaning: "Мастерство, инициатива, харизма. Испытания: избегайте манипуляций или импульсивности.", shadow: "Самоуверенность, обман.", wealth: "Высокий потенциал успеха через мастерство и стратегию." },
+            2: { name: "Верховная Жрица", meaning: "Интуиция, тайны, мудрость. Испытания: избегайте паранойи или подавления эмоций.", shadow: "Страх потери контроля, игнорирование интуиции.", wealth: "Успех через мудрые, скрытые решения, не мгновенное богатство." },
+            3: { name: "Императрица", meaning: "Творчество, изобилие, забота. Испытания: баланс амбиций и заботы.", shadow: "Страх застоя, чрезмерные амбиции.", wealth: "Высокий потенциал богатства через творчество или наследие." },
+            4: { name: "Император", meaning: "Авторитет, структура, лидерство. Испытания: избегайте жёсткости или контроля.", shadow: "Тирания, негибкость.", wealth: "Успех через лидерство и стабильность." },
+            5: { name: "Иерофант", meaning: "Традиции, мудрость, наставничество. Испытания: избегайте чрезмерного конформизма или бунта.", shadow: "Догматизм, сопротивление.", wealth: "Успех через знания и структуру, не быстрые выгоды." },
+            6: { name: "Влюблённые", meaning: "Партнёрство, выбор, гармония. Испытания: баланс отношений и личных целей.", shadow: "Нерешительность, конфликт.", wealth: "Успех через сотрудничество, меньше прямого богатства." },
+            7: { name: "Колесница", meaning: "Победа, решимость, контроль. Испытания: сохраняйте фокус, избегайте агрессии.", shadow: "Отсутствие направления, импульсивность.", wealth: "Высокий потенциал успеха через драйв и фокус." },
+            8: { name: "Справедливость", meaning: "Баланс, карма, правда. Испытания: принимайте справедливые решения, учитывайте последствия.", shadow: "Несправедливость, избегание ответственности.", wealth: "Успех через этичные решения, стабильные выгоды." },
+            9: { name: "Отшельник", meaning: "Уединение, мудрость, саморефлексия. Испытания: избегайте изоляции или чрезмерного размышления.", shadow: "Страх одиночества, уход в себя.", wealth: "Успех через знания, не мгновенное богатство." },
+            10: { name: "Колесо Фортуны", meaning: "Удача, циклы, поворотные моменты. Испытания: адаптация к переменам, принятие неопределённости.", shadow: "Сопротивление переменам, невезение.", wealth: "Высокий потенциал богатства или успеха, как 'разбогател'." },
+            11: { name: "Сила", meaning: "Мужество, внутренняя сила, сострадание. Испытания: контроль эмоций, избегайте высокомерия.", shadow: "Слабость, неуверенность.", wealth: "Успех через стойкость, стабильные выгоды." },
+            12: { name: "Повешенный", meaning: "Пауза, жертва, новый взгляд. Испытания: отпустите контроль, примите сдачу.", shadow: "Застой, сопротивление переменам.", wealth: "Успех через переосмысление, не быстрые выгоды." },
+            13: { name: "Смерть", meaning: "Трансформация, завершение, обновление. Испытания: примите перемены, отпустите прошлое.", shadow: "Страх перемен, цепляние за старое.", wealth: "Успех через трансформацию, потенциал нового богатства." },
+            14: { name: "Умеренность", meaning: "Баланс, гармония, терпение. Испытания: найдите равновесие, избегайте крайностей.", shadow: "Дисбаланс, нетерпение.", wealth: "Стабильный успех через баланс, не внезапное богатство." },
+            15: { name: "Дьявол", meaning: "Искушение, материализм, свобода. Испытания: освободитесь от вредных привычек.", shadow: "Зависимость, ловушка.", wealth: "Потенциал богатства, но с риском материализма." },
+            16: { name: "Башня", meaning: "Внезапные перемены, разрушение, откровение. Испытания: восстановление после потрясений.", shadow: "Страх краха, отрицание.", wealth: "Потенциал выгод после хаоса, высокий риск." },
+            17: { name: "Звезда", meaning: "Надежда, вдохновение, исцеление. Испытания: сохраняйте веру, избегайте разочарования.", shadow: "Безнадёжность, отчаяние.", wealth: "Успех через оптимизм, постепенные выгоды." },
+            18: { name: "Луна", meaning: "Иллюзии, интуиция, сны. Испытания: ориентируйтесь в неопределённости, избегайте обмана.", shadow: "Смятение, страх неизвестности.", wealth: "Успех через интуицию, не прямое богатство." },
+            19: { name: "Солнце", meaning: "Успех, радость, жизненная сила. Испытания: баланс эго и скромности.", shadow: "Высокомерие, неясность.", wealth: "Высокий потенциал богатства или триумфа, как 'разбогател'." },
+            20: { name: "Суд", meaning: "Пробуждение, обновление, цель. Испытания: примите трансформацию, избегайте осуждения.", shadow: "Неуверенность, сопротивление росту.", wealth: "Успех через обновление, долгосрочные выгоды." },
+            21: { name: "Мир", meaning: "Завершение, исполнение, единство. Испытания: примите успех, готовьтесь к новым циклам.", shadow: "Незавершённость, отсутствие закрытия.", wealth: "Высокий потенциал исполнения и богатства." },
+            22: { name: "Шут (22)", meaning: "Как Шут (0), но с большим духовным значением.", shadow: "Как у Шута.", wealth: "Успех через смелые риски, не гарантированное богатство." }
         };
 
         // Form submission handler
@@ -98,32 +156,31 @@ html
             const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = `
                 <div class="section">
-                    <h2>Results for Age ${age} in ${year}</h2>
-                    <p><strong>Year Numerology:</strong> ${yearSum} (${arcana[yearSum].name})</p>
-                    <p><strong>Age Arcana (N):</strong> ${N}</p>
+                    <h2>Результаты для возраста ${age} в ${year} году</h2>
+                    <p><strong>Нумерология года:</strong> ${yearSum} (${arcana[yearSum].name})</p>
+                    <p><strong>Аркан возраста (N):</strong> ${N}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Energy of the Year:</strong> <span class="arcana">${arcana[energyYear].name} (${energyYear})</span><br>
+                    <p><strong>Энергия года:</strong> <span class="arcana">${arcana[energyYear].name} (${energyYear})</span><br>
                     ${arcana[energyYear].meaning}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Second Energy:</strong> <span class="arcana">${arcana[secondEnergy].name} (${secondEnergy})</span><br>
+                    <p><strong>Вторая энергия:</strong> <span class="arcana">${arcana[secondEnergy].name} (${secondEnergy})</span><br>
                     ${arcana[secondEnergy].meaning}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Sum:</strong> <span class="arcana">${arcana[sum].name} (${sum})</span><br>
+                    <p><strong>Сумма:</strong> <span class="arcana">${arcana[sum].name} (${sum})</span><br>
                     ${arcana[sum].meaning}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Shadow Energy:</strong> <span class="arcana">${arcana[shadowEnergy].name} (${shadowEnergy})</span><br>
+                    <p><strong>Энергия тени:</strong> <span class="arcana">${arcana[shadowEnergy].name} (${shadowEnergy})</span><br>
                     ${arcana[shadowEnergy].shadow}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Wealth/Success Potential:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 ? "High potential for wealth or success (like 'got rich' for leaders)." : "Success through balance, wisdom, or strategic choices, not instant 'luck'."}</p>
+                    <p><strong>Потенциал богатства/успеха:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 ? "Высокий потенциал богатства или успеха (как 'разбогател' для лидеров)." : "Успех через баланс, мудрость или стратегические решения, не мгновенная удача."}</p>
                 </div>
             `;
         });
     </script>
 </body>
 </html>
-
