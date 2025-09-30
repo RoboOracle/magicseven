@@ -1,0 +1,2 @@
+# magicseven
+Numerology calculator 
