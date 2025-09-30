@@ -1,207 +1,236 @@
-  <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор Магическая Семёрка</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #1e1b4d, #2a2a72);
-            color: #e0e0ff;
-            line-height: 1.6;
-        }
-        h1 {
-            color: #d4a5ff;
-            text-align: center;
-            font-size: 2.5em;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        form {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-            color: #d4a5ff;
-        }
-        input {
-            padding: 10px;
-            width: 100%;
-            max-width: 300px;
-            border: 1px solid #d4a5ff;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-        }
-        button {
-            padding: 12px 24px;
-            margin: 15px 0;
-            background: linear-gradient(45deg, #8e44ad, #d4a5ff);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1em;
-        }
-        button:hover {
-            background: linear-gradient(45deg, #732d8a, #b57edc);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        #result {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        }
-        .arcana {
-            color: #ffccff;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .error {
-            color: #ff6666;
-            font-weight: bold;
-        }
-        @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            input, button { max-width: 100%; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Таро-нумерология</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Trebuchet MS", cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      color: #222;
+      padding: 20px;
+      margin: 0;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc, 0 0 30px #ff33cc;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .calculator {
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s ease;
+    }
+    .calculator:hover {
+      transform: scale(1.02);
+    }
+    label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: bold;
+      color: #444;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+      border: 2px solid #ff33cc;
+      font-size: 16px;
+      margin-bottom: 10px;
+      outline: none;
+      transition: 0.3s;
+    }
+    input:focus {
+      border-color: #33ccff;
+      box-shadow: 0 0 10px #33ccff;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background: linear-gradient(45deg, #ff33cc, #33ccff);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease-in-out;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #33ccff, #ff33cc);
+      box-shadow: 0 0 20px #ff33cc, 0 0 30px #33ccff;
+      transform: scale(1.05);
+    }
+    .results {
+      margin-top: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      border: 3px dashed #33ccff;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .arcana {
+      font-weight: bold;
+      color: #ff33cc;
+    }
+    .section {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-left: 5px solid #33ccff;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 0 0 5px #000;
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
-    <h1>Калькулятор «Магическая Семёрка»</h1>
-    <form id="calcForm">
-        <label for="age">Введите возраст:</label>
-        <input type="number" id="age" min="0" required>
-        <label for="year">Введите год:</label>
-        <input type="number" id="year" min="1900" required>
-        <button type="submit">Рассчитать</button>
-    </form>
-    <div id="result"></div>
+  <h1>✨ Калькулятор Таро-нумерологии ✨</h1>
+  <div class="calculator">
+    <label for="birthdate">Дата рождения:</label>
+    <input type="date" id="birthdate">
+    
+    <label for="age">Возраст в текущем году:</label>
+    <input type="number" id="age" min="1" max="120">
+    
+    <button onclick="calculate()">🔮 Рассчитать</button>
+    
+    <div class="results" id="results"></div>
+  </div>
 
-    <script>
-        // Tarot Arcana interpretations (in Russian)
-        const arcana = {
-            0: { name: "Шут", meaning: "Новые начинания, спонтанность, прыжок веры. Испытания: избегайте безрассудства или наивности.", shadow: "Страх перемен, застой.", wealth: "Успех через смелые риски, но богатство не гарантировано." },
-            1: { name: "Маг", meaning: "Мастерство, инициатива, харизма. Испытания: избегайте манипуляций или импульсивности.", shadow: "Самоуверенность, обман.", wealth: "Высокий потенциал успеха через мастерство и стратегию." },
-            2: { name: "Верховная Жрица", meaning: "Интуиция, тайны, мудрость. Испытания: избегайте паранойи или подавления эмоций.", shadow: "Страх потери контроля, игнорирование интуиции.", wealth: "Успех через мудрые, скрытые решения, не мгновенное богатство." },
-            3: { name: "Императрица", meaning: "Творчество, изобилие, забота. Испытания: баланс амбиций и заботы.", shadow: "Страх застоя, чрезмерные амбиции.", wealth: "Высокий потенциал богатства через творчество или наследие." },
-            4: { name: "Император", meaning: "Авторитет, структура, лидерство. Испытания: избегайте жёсткости или контроля.", shadow: "Тирания, негибкость.", wealth: "Успех через лидерство и стабильность." },
-            5: { name: "Иерофант", meaning: "Традиции, мудрость, наставничество. Испытания: избегайте чрезмерного конформизма или бунта.", shadow: "Догматизм, сопротивление.", wealth: "Успех через знания и структуру, не быстрые выгоды." },
-            6: { name: "Влюблённые", meaning: "Партнёрство, выбор, гармония. Испытания: баланс отношений и личных целей.", shadow: "Нерешительность, конфликт.", wealth: "Успех через сотрудничество, меньше прямого богатства." },
-            7: { name: "Колесница", meaning: "Победа, решимость, контроль. Испытания: сохраняйте фокус, избегайте агрессии.", shadow: "Отсутствие направления, импульсивность.", wealth: "Высокий потенциал успеха через драйв и фокус." },
-            8: { name: "Справедливость", meaning: "Баланс, карма, правда. Испытания: принимайте справедливые решения, учитывайте последствия.", shadow: "Несправедливость, избегание ответственности.", wealth: "Успех через этичные решения, стабильные выгоды." },
-            9: { name: "Отшельник", meaning: "Уединение, мудрость, саморефлексия. Испытания: избегайте изоляции или чрезмерного размышления.", shadow: "Страх одиночества, уход в себя.", wealth: "Успех через знания, не мгновенное богатство." },
-            10: { name: "Колесо Фортуны", meaning: "Удача, циклы, поворотные моменты. Испытания: адаптация к переменам, принятие неопределённости.", shadow: "Сопротивление переменам, невезение.", wealth: "Высокий потенциал богатства или успеха, как 'разбогател'." },
-            11: { name: "Сила", meaning: "Мужество, внутренняя сила, сострадание. Испытания: контроль эмоций, избегайте высокомерия.", shadow: "Слабость, неуверенность.", wealth: "Успех через стойкость, стабильные выгоды." },
-            12: { name: "Повешенный", meaning: "Пауза, жертва, новый взгляд. Испытания: отпустите контроль, примите сдачу.", shadow: "Застой, сопротивление переменам.", wealth: "Успех через переосмысление, не быстрые выгоды." },
-            13: { name: "Смерть", meaning: "Трансформация, завершение, обновление. Испытания: примите перемены, отпустите прошлое.", shadow: "Страх перемен, цепляние за старое.", wealth: "Успех через трансформацию, потенциал нового богатства." },
-            14: { name: "Умеренность", meaning: "Баланс, гармония, терпение. Испытания: найдите равновесие, избегайте крайностей.", shadow: "Дисбаланс, нетерпение.", wealth: "Стабильный успех через баланс, не внезапное богатство." },
-            15: { name: "Дьявол", meaning: "Искушение, материализм, свобода. Испытания: освободитесь от вредных привычек.", shadow: "Зависимость, ловушка.", wealth: "Потенциал богатства, но с риском материализма." },
-            16: { name: "Башня", meaning: "Внезапные перемены, разрушение, откровение. Испытания: восстановление после потрясений.", shadow: "Страх краха, отрицание.", wealth: "Потенциал выгод после хаоса, высокий риск." },
-            17: { name: "Звезда", meaning: "Надежда, вдохновение, исцеление. Испытания: сохраняйте веру, избегайте разочарования.", shadow: "Безнадёжность, отчаяние.", wealth: "Успех через оптимизм, постепенные выгоды." },
-            18: { name: "Луна", meaning: "Иллюзии, интуиция, сны. Испытания: ориентируйтесь в неопределённости, избегайте обмана.", shadow: "Смятение, страх неизвестности.", wealth: "Успех через интуицию, не прямое богатство." },
-            19: { name: "Солнце", meaning: "Успех, радость, жизненная сила. Испытания: баланс эго и скромности.", shadow: "Высокомерие, неясность.", wealth: "Высокий потенциал богатства или триумфа, как 'разбогател'." },
-            20: { name: "Суд", meaning: "Пробуждение, обновление, цель. Испытания: примите трансформацию, избегайте осуждения.", shadow: "Неуверенность, сопротивление росту.", wealth: "Успех через обновление, долгосрочные выгоды." },
-            21: { name: "Мир", meaning: "Завершение, исполнение, единство. Испытания: примите успех, готовьтесь к новым циклам.", shadow: "Незавершённость, отсутствие закрытия.", wealth: "Высокий потенциал исполнения и богатства." },
-            22: { name: "Шут (22)", meaning: "Новые начинания, спонтанность, прыжок веры с большим духовным значением.", shadow: "Страх перемен, застой.", wealth: "Успех через смелые риски, не гарантированное богатство." }
-        };
+  <footer>
+    © <span id="year"></span> Магическая Семёрка ✨ Все права защищены.
+  </footer>
+  
+  <script>
+    const arcana = {
+      0: { name: "Шут", meaning: "Начало пути, спонтанность, свобода.", shadow: "Безответственность.", wealth: "Рискованные шаги." },
+      1: { name: "Маг", meaning: "Воля, сила намерения, проявление.", shadow: "Манипуляция.", wealth: "Инициативность приносит выгоду." },
+      2: { name: "Верховная Жрица", meaning: "Интуиция, тайна, знание.", shadow: "Секретность.", wealth: "Доход через скрытые знания." },
+      3: { name: "Императрица", meaning: "Творчество, изобилие, забота.", shadow: "Излишества.", wealth: "Материальный рост." },
+      4: { name: "Император", meaning: "Структура, власть, контроль.", shadow: "Жёсткость.", wealth: "Стабильный доход." },
+      5: { name: "Иерофант", meaning: "Учение, традиция, наставничество.", shadow: "Догматизм.", wealth: "Доход через обучение." },
+      6: { name: "Влюблённые", meaning: "Выбор, гармония, отношения.", shadow: "Неопределённость.", wealth: "Выгода через партнёрство." },
+      7: { name: "Колесница", meaning: "Движение, победа, направление.", shadow: "Агрессия.", wealth: "Достижения через усилия." },
+      8: { name: "Сила", meaning: "Мужество, внутренняя сила.", shadow: "Слабость.", wealth: "Доход через настойчивость." },
+      9: { name: "Отшельник", meaning: "Мудрость, поиск, уединение.", shadow: "Одиночество.", wealth: "Доход от исследований." },
+      10: { name: "Колесо Фортуны", meaning: "Судьба, цикл, перемены.", shadow: "Нестабильность.", wealth: "Случайные доходы." },
+      11: { name: "Справедливость", meaning: "Баланс, закон, равновесие.", shadow: "Несправедливость.", wealth: "Доход через правовые дела." },
+      12: { name: "Повешенный", meaning: "Пауза, жертва, переосмысление.", shadow: "Беспомощность.", wealth: "Неочевидные источники." },
+      13: { name: "Смерть", meaning: "Трансформация, конец и начало.", shadow: "Сопротивление.", wealth: "Резкая смена дохода." },
+      14: { name: "Умеренность", meaning: "Гармония, баланс, интеграция.", shadow: "Излишества.", wealth: "Стабильный рост." },
+      15: { name: "Дьявол", meaning: "Зависимость, материальность, искушение.", shadow: "Порабощение.", wealth: "Прибыль с риском." },
+      16: { name: "Башня", meaning: "Разрушение, внезапность, кризис.", shadow: "Крах.", wealth: "Неожиданные потери и обновление." },
+      17: { name: "Звезда", meaning: "Надежда, вдохновение, исцеление.", shadow: "Иллюзии.", wealth: "Прибыль от креатива." },
+      18: { name: "Луна", meaning: "Подсознание, иллюзии, страхи.", shadow: "Обман.", wealth: "Доход через тайные дела." },
+      19: { name: "Солнце", meaning: "Радость, успех, ясность.", shadow: "Эгоизм.", wealth: "Большая прибыль." },
+      20: { name: "Суд", meaning: "Возрождение, пробуждение.", shadow: "Отрицание.", wealth: "Доход через возрождение идей." },
+      21: { name: "Мир", meaning: "Завершение, целостность, успех.", shadow: "Застой.", wealth: "Доход через международные дела." },
+      22: { name: "Шут (как 22)", meaning: "Новый цикл, свобода.", shadow: "Хаос.", wealth: "Рискованные шаги." }
+    };
 
-        // Form submission handler
-        document.getElementById("calcForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const ageInput = document.getElementById("age").value;
-            const yearInput = document.getElementById("year").value;
-            const age = parseInt(ageInput);
-            const year = parseInt(yearInput);
+    function getArcana(num) {
+      return arcana[num] || { name: "Неизвестно", meaning: "Ошибка.", shadow: "—", wealth: "—" };
+    }
 
-            // Input validation
-            if (isNaN(age) || isNaN(year) || age < 0 || year < 1900) {
-                document.getElementById("result").innerHTML = `
-                    <div class="section">
-                        <p class="error">Ошибка: Введите корректный возраст (≥ 0) и год (≥ 1900).</p>
-                    </div>
-                `;
-                return;
-            }
+    function calculate() {
+      const birthdate = document.getElementById("birthdate").value;
+      const age = parseInt(document.getElementById("age").value);
+      if (!birthdate || !age) {
+        alert("Введите дату рождения и возраст.");
+        return;
+      }
 
-            // Calculate year numerology
-            let yearSum = String(year).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
-            if ([9, 10, 11].includes(yearSum)) yearSum = yearSum; // Keep 9, 10, 11 as Major Arcana
-            else while (yearSum > 22) yearSum = String(yearSum).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+      const year = new Date(birthdate).getFullYear();
+      const currentYear = year + age;
 
-            // Step 1 & 2: Decompose age into decades and subtract 7
-            const fullDecades = Math.floor(age / 10);
-            const remainder = age % 10;
-            const decadeValue = fullDecades * (10 - 7); // 10 - 7 = 3
-            const remainderValue = remainder < 7 ? remainder : remainder - 7;
+      // Энергия года
+      let yearSum = String(currentYear).split("").reduce((s,d) => s + parseInt(d), 0);
+      if (![9,10,11].includes(yearSum)) {
+        while (yearSum > 22) {
+          yearSum = String(yearSum).split("").reduce((s,d) => s + parseInt(d), 0);
+        }
+      }
 
-            // Step 3: Calculate N
-            const N = decadeValue + remainderValue;
+      // Аркан возраста
+      let N = age <= 22 ? age : age % 22 || 22;
 
-            // Step 4: Energy of the Year
-            let energyYear = N + yearSum;
-            if (energyYear > 22) energyYear = energyYear - 22;
+      // Вторая энергия (только если возраст > 22)
+      let secondEnergy = null;
+      if (age > 22) {
+        let temp = age;
+        while (temp > 22) {
+          temp = String(temp).split("").reduce((s,d) => s + parseInt(d), 0);
+        }
+        secondEnergy = temp;
+      }
 
-            // Step 5: Second Energy
-            let secondEnergy = N <= 22 ? N : N - 22;
+      // Сумма N и энергии года
+      let sum = N + yearSum;
+      while (sum > 22) {
+        sum = String(sum).split("").reduce((s,d) => s + parseInt(d), 0);
+      }
 
-            // Step 6: Sum
-            let sum = (N - 22) + yearSum;
-            if (sum < 0) sum = Math.abs(sum);
-            if (sum > 22) sum = sum - 22;
+      // Энергия тени
+      let shadowEnergy = (sum + yearSum) % 22 || 22;
 
-            // Step 7: Shadow Energy
-            let shadowEnergy = 22 - N;
-            if (shadowEnergy < 0) shadowEnergy = Math.abs(shadowEnergy);
-            // Avoid duplication with secondEnergy or energyYear
-            let attempts = 0;
-            while ((shadowEnergy === secondEnergy || shadowEnergy === energyYear) && attempts < 2) {
-                shadowEnergy = (shadowEnergy + yearSum) % 22;
-                attempts++;
-            }
+      document.getElementById("results").innerHTML = `
+        <h2>🔮 Результаты 🔮</h2>
+        <div class="section">
+          <p><strong>Энергия года:</strong> <span class="arcana">${getArcana(yearSum).name} (${yearSum})</span><br>${getArcana(yearSum).meaning}</p>
+        </div>
+        <div class="section">
+          <p><strong>Аркан возраста:</strong> <span class="arcana">${getArcana(N).name} (${N})</span><br>${getArcana(N).meaning}</p>
+        </div>
+        <div class="section">
+          ${secondEnergy 
+            ? `<p><strong>Вторая энергия:</strong> <span class="arcana">${getArcana(secondEnergy).name} (${secondEnergy})</span><br>${getArcana(secondEnergy).meaning}</p>` 
+            : `<p><strong>Вторая энергия:</strong> отсутствует</p>`}
+        </div>
+        <div class="section">
+          <p><strong>Сумма:</strong> <span class="arcana">${getArcana(sum).name} (${sum})</span><br>${getArcana(sum).meaning}</p>
+        </div>
+        <div class="section">
+          <p><strong>Энергия тени:</strong> <span class="arcana">${getArcana(shadowEnergy).name} (${shadowEnergy})</span><br>${getArcana(shadowEnergy).shadow}</p>
+        </div>
+        <div class="section">
+          <p><strong>💰 Финансовая перспектива:</strong> ${getArcana(yearSum).wealth}</p>
+        </div>
+      `;
+    }
 
-            // Display results
-            document.getElementById("result").innerHTML = `
-                <div class="section">
-                    <h2>Результаты для возраста ${age} в ${year} году</h2>
-                    <p><strong>Нумерология года:</strong> ${yearSum} (${arcana[yearSum].name})</p>
-                    <p><strong>Аркан возраста (N):</strong> ${N}</p>
-                </div>
-                <div class="section">
-                    <p><strong>Энергия года:</strong> <span class="arcana">${arcana[energyYear].name} (${energyYear})</span><br>
-                    ${arcana[energyYear].meaning}</p>
-                </div>
-                <div class="section">
-                    <p><strong>Вторая энергия:</strong> <span class="arcana">${arcana[secondEnergy].name} (${secondEnergy})</span><br>
-                    ${arcana[secondEnergy].meaning}</p>
-                </div>
-                <div class="section">
-                    <p><strong>Сумма:</strong> <span class="arcana">${arcana[sum].name} (${sum})</span><br>
-                    ${arcana[sum].meaning}</p>
-                </div>
-                <div class="section">
-                    <p><strong>Энергия тени:</strong> <span class="arcana">${arcana[shadowEnergy].name} (${shadowEnergy})</span><br>
-                    ${arcana[shadowEnergy].shadow}</p>
-                </div>
-                <div class="section">
-                    <p><strong>Потенциал богатства/успеха:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 || energyYear === 22 ? "Высокий потенциал богатства или успеха (как 'разбогател' для лидеров)." : "Успех через баланс, мудрость или стратегические решения, не мгновенная удача."}</p>
-                </div>
-            `;
-        });
-    </script>
+    // Автоматически подставляем год в копирайт
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
-
