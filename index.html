@@ -1,11 +1,11 @@
-   <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Таро-нумерология</title>
+  <title>Магическая Семёрка</title>
   <style>
     body {
-      font-family: "Comic Sans MS", "Trebuchet MS", cursive, sans-serif;
+      font-family: "Comic Sans MS", cursive, sans-serif;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
       background-size: 400% 400%;
       animation: gradientBG 12s ease infinite;
@@ -21,7 +21,7 @@
     h1 {
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc, 0 0 30px #ff33cc;
+      text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc;
       font-size: 2.5em;
       margin-bottom: 10px;
     }
@@ -35,9 +35,7 @@
       backdrop-filter: blur(5px);
       transition: transform 0.3s ease;
     }
-    .calculator:hover {
-      transform: scale(1.02);
-    }
+    .calculator:hover { transform: scale(1.02); }
     label {
       display: block;
       margin: 12px 0 5px;
@@ -93,35 +91,19 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .arcana {
-      font-weight: bold;
-      color: #ff33cc;
-    }
-    .section {
-      margin-bottom: 15px;
-      padding: 10px;
-      border-left: 5px solid #33ccff;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 8px;
-    }
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      color: #fff;
-      text-shadow: 0 0 5px #000;
-      opacity: 0.9;
-    }
+    .arcana { font-weight: bold; color: #ff33cc; }
+    .section { margin-bottom: 15px; padding: 10px; border-left: 5px solid #33ccff; background: rgba(255,255,255,0.6); border-radius: 8px; }
+    footer { text-align: center; margin-top: 40px; font-size: 14px; color: #fff; text-shadow: 0 0 5px #000; opacity: 0.9; }
   </style>
 </head>
 <body>
-  <h1>✨ Калькулятор Таро-нумерологии ✨</h1>
+  <h1>✨ Калькулятор Магическая Семёрка ✨</h1>
   <div class="calculator">
-    <label for="birthdate">Дата рождения:</label>
-    <input type="date" id="birthdate">
+    <label for="age">Возраст:</label>
+    <input type="number" id="age" min="1" max="120" placeholder="Например: 40">
     
-    <label for="age">Возраст в текущем году:</label>
-    <input type="number" id="age" min="1" max="120">
+    <label for="year">Год:</label>
+    <input type="number" id="year" min="1900" max="2100" placeholder="Например: 2025">
     
     <button onclick="calculate()">🔮 Рассчитать</button>
     
@@ -129,10 +111,12 @@
   </div>
 
   <footer>
-    © <span id="year"></span> Магическая Семёрка ✨ Все права защищены.
+    © <span id="currentYear"></span> Магическая Семёрка ✨ Все права защищены.
   </footer>
   
   <script>
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+
     const arcana = {
       0: { name: "Шут", meaning: "Начало пути, спонтанность, свобода.", shadow: "Безответственность.", wealth: "Рискованные шаги." },
       1: { name: "Маг", meaning: "Воля, сила намерения, проявление.", shadow: "Манипуляция.", wealth: "Инициативность приносит выгоду." },
@@ -159,78 +143,20 @@
       22: { name: "Шут (как 22)", meaning: "Новый цикл, свобода.", shadow: "Хаос.", wealth: "Рискованные шаги." }
     };
 
-    function getArcana(num) {
-      return arcana[num] || { name: "Неизвестно", meaning: "Ошибка.", shadow: "—", wealth: "—" };
-    }
+    function getArcana(num) { return arcana[num] || { name: "Неизвестно", meaning: "Ошибка.", shadow: "—", wealth: "—" }; }
 
     function calculate() {
-      const birthdate = document.getElementById("birthdate").value;
       const age = parseInt(document.getElementById("age").value);
-      if (!birthdate || !age) {
-        alert("Введите дату рождения и возраст.");
-        return;
-      }
-
-      const year = new Date(birthdate).getFullYear();
-      const currentYear = year + age;
+      const year = parseInt(document.getElementById("year").value);
+      if (!age || !year) { alert("Введите возраст и год."); return; }
 
       // Энергия года
-      let yearSum = String(currentYear).split("").reduce((s,d) => s + parseInt(d), 0);
-      if (![9,10,11].includes(yearSum)) {
-        while (yearSum > 22) {
-          yearSum = String(yearSum).split("").reduce((s,d) => s + parseInt(d), 0);
-        }
-      }
+      let yearSum = String(year).split("").reduce((s,d)=>s+parseInt(d),0);
+      if (![9,10,11].includes(yearSum)) while(yearSum>22) yearSum=String(yearSum).split("").reduce((s,d)=>s+parseInt(d),0);
 
       // Аркан возраста
       let N = age <= 22 ? age : age % 22 || 22;
 
-      // Вторая энергия (только если возраст > 22)
+      // Вторая энергия
       let secondEnergy = null;
-      if (age > 22) {
-        let temp = age;
-        while (temp > 22) {
-          temp = String(temp).split("").reduce((s,d) => s + parseInt(d), 0);
-        }
-        secondEnergy = temp;
-      }
-
-      // Сумма N и энергии года
-      let sum = N + yearSum;
-      while (sum > 22) {
-        sum = String(sum).split("").reduce((s,d) => s + parseInt(d), 0);
-      }
-
-      // Энергия тени
-      let shadowEnergy = (sum + yearSum) % 22 || 22;
-
-      document.getElementById("results").innerHTML = `
-        <h2>🔮 Результаты 🔮</h2>
-        <div class="section">
-          <p><strong>Энергия года:</strong> <span class="arcana">${getArcana(yearSum).name} (${yearSum})</span><br>${getArcana(yearSum).meaning}</p>
-        </div>
-        <div class="section">
-          <p><strong>Аркан возраста:</strong> <span class="arcana">${getArcana(N).name} (${N})</span><br>${getArcana(N).meaning}</p>
-        </div>
-        <div class="section">
-          ${secondEnergy 
-            ? `<p><strong>Вторая энергия:</strong> <span class="arcana">${getArcana(secondEnergy).name} (${secondEnergy})</span><br>${getArcana(secondEnergy).meaning}</p>` 
-            : `<p><strong>Вторая энергия:</strong> отсутствует</p>`}
-        </div>
-        <div class="section">
-          <p><strong>Сумма:</strong> <span class="arcana">${getArcana(sum).name} (${sum})</span><br>${getArcana(sum).meaning}</p>
-        </div>
-        <div class="section">
-          <p><strong>Энергия тени:</strong> <span class="arcana">${getArcana(shadowEnergy).name} (${shadowEnergy})</span><br>${getArcana(shadowEnergy).shadow}</p>
-        </div>
-        <div class="section">
-          <p><strong>💰 Финансовая перспектива:</strong> ${getArcana(yearSum).wealth}</p>
-        </div>
-      `;
-    }
-
-    // Автоматически подставляем год в копирайт
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+      if(age>22){
