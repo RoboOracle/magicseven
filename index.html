@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор Магическая Семёрка от канала РобоОракул </title>
+    <title>Калькулятор Магическая Семёрка</title>
     <style>
         body {
             font-family: 'Georgia', serif;
@@ -77,7 +77,7 @@
     </style>
 </head>
 <body>
-    <h1>Калькулятор Магическая Семёрка от канала РобоОракул (с)</h1>
+    <h1>Калькулятор «Магическая Семёрка»</h1>
     <form id="calcForm">
         <label for="age">Введите возраст:</label>
         <input type="number" id="age" min="0" required>
@@ -112,7 +112,7 @@
             19: { name: "Солнце", meaning: "Успех, радость, жизненная сила. Испытания: баланс эго и скромности.", shadow: "Высокомерие, неясность.", wealth: "Высокий потенциал богатства или триумфа, как 'разбогател'." },
             20: { name: "Суд", meaning: "Пробуждение, обновление, цель. Испытания: примите трансформацию, избегайте осуждения.", shadow: "Неуверенность, сопротивление росту.", wealth: "Успех через обновление, долгосрочные выгоды." },
             21: { name: "Мир", meaning: "Завершение, исполнение, единство. Испытания: примите успех, готовьтесь к новым циклам.", shadow: "Незавершённость, отсутствие закрытия.", wealth: "Высокий потенциал исполнения и богатства." },
-            22: { name: "Шут (22)", meaning: "Как Шут (0), но с большим духовным значением.", shadow: "Как у Шута.", wealth: "Успех через смелые риски, не гарантированное богатство." }
+            22: { name: "Шут (22)", meaning: "Новые начинания, спонтанность, прыжок веры с большим духовным значением.", shadow: "Страх перемен, застой.", wealth: "Успех через смелые риски, не гарантированное богатство." }
         };
 
         // Form submission handler
@@ -135,22 +135,38 @@
             // Step 3: Calculate N
             const N = decadeValue + remainderValue;
 
+            // Calculate Quersumme of N
+            let quersummeN = String(N).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+            if (quersummeN > 22) quersummeN = String(quersummeN).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+
             // Step 4: Energy of the Year
             let energyYear = N > 22 ? (N - 22) : N;
             energyYear += yearSum;
-            if (energyYear > 22) energyYear = String(energyYear).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+            let energyYear2 = null;
+            if (energyYear > 22) {
+                energyYear2 = String(energyYear).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+                energyYear = energyYear - 22;
+            }
 
             // Step 5: Second Energy
-            let secondEnergy = N - 22;
-            if (secondEnergy < 0) secondEnergy = Math.abs(secondEnergy);
+            let secondEnergy = N <= 22 ? N : N - 22;
+            let secondEnergy2 = null;
+            if (N > 22) {
+                secondEnergy2 = String(N).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+                if (secondEnergy2 > 22) secondEnergy2 = String(secondEnergy2).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
 
             // Step 6: Sum
             let sum = (N - 22) + yearSum;
             if (sum < 0) sum = Math.abs(sum);
-            if (sum > 22) sum = String(sum).split("").reduce((sum, digit) => sum + parseInt(digit), 0);
+            if (sum > 22) sum = sum - 22;
 
             // Step 7: Shadow Energy
-            const shadowEnergy = Math.abs(22 - N);
+            let shadowEnergy = 22 - N;
+            // Avoid duplication with secondEnergy, secondEnergy2, energyYear, or energyYear2
+            if (shadowEnergy === secondEnergy || shadowEnergy === secondEnergy2 || shadowEnergy === energyYear || shadowEnergy === energyYear2) {
+                shadowEnergy = (shadowEnergy + yearSum) % 22;
+            }
 
             // Display results
             const resultDiv = document.getElementById("result");
@@ -159,14 +175,17 @@
                     <h2>Результаты для возраста ${age} в ${year} году</h2>
                     <p><strong>Нумерология года:</strong> ${yearSum} (${arcana[yearSum].name})</p>
                     <p><strong>Аркан возраста (N):</strong> ${N}</p>
+                    <p><strong>Кверсумма N:</strong> ${quersummeN} (${arcana[quersummeN].name})</p>
                 </div>
                 <div class="section">
                     <p><strong>Энергия года:</strong> <span class="arcana">${arcana[energyYear].name} (${energyYear})</span><br>
                     ${arcana[energyYear].meaning}</p>
+                    ${energyYear2 !== null ? `<p><strong>Энергия года (кверсумма):</strong> <span class="arcana">${arcana[energyYear2].name} (${energyYear2})</span><br>${arcana[energyYear2].meaning}</p>` : ''}
                 </div>
                 <div class="section">
                     <p><strong>Вторая энергия:</strong> <span class="arcana">${arcana[secondEnergy].name} (${secondEnergy})</span><br>
                     ${arcana[secondEnergy].meaning}</p>
+                    ${secondEnergy2 !== null ? `<p><strong>Вторая энергия (кверсумма):</strong> <span class="arcana">${arcana[secondEnergy2].name} (${secondEnergy2})</span><br>${arcana[secondEnergy2].meaning}</p>` : ''}
                 </div>
                 <div class="section">
                     <p><strong>Сумма:</strong> <span class="arcana">${arcana[sum].name} (${sum})</span><br>
@@ -177,12 +196,13 @@
                     ${arcana[shadowEnergy].shadow}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Потенциал богатства/успеха:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 ? "Высокий потенциал богатства или успеха (как 'разбогател' для лидеров)." : "Успех через баланс, мудрость или стратегические решения, не мгновенная удача."}</p>
+                    <p><strong>Потенциал богатства/успеха:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 || energyYear === 22 ? "Высокий потенциал богатства или успеха (как 'разбогател' для лидеров)." : "Успех через баланс, мудрость или стратегические решения, не мгновенная удача."}</p>
                 </div>
             `;
         });
     </script>
 </body>
 </html>
+
 
 
