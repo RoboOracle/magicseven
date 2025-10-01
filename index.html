@@ -173,23 +173,26 @@
                 if (secondEnergyMinus22 !== energyYear) secondEnergy.push(secondEnergyMinus22);
             }
 
-            // Step 6: Challenges (previously Sum)
-            let challenges = (N - 22) + yearSum;
-            if (challenges < 0) challenges = Math.abs(challenges);
-            if (challenges > 22) challenges = challenges - 22;
+            // Step 6: Shadow Energy
+            let shadowEnergy = 22 - N; // Keep negative values
 
-            // Step 7: Shadow Energy
-            let shadowEnergy = 22 - N;
-            if (shadowEnergy < 0) shadowEnergy = Math.abs(shadowEnergy);
-            // Avoid duplication with secondEnergy or energyYear
+            // Step 7: Challenges (Shadow Energy + Year Arcana)
+            let challenges = shadowEnergy + yearSum;
+            if (challenges > 22) challenges = challenges - 22;
+            if (challenges < 0) challenges = Math.abs(challenges);
+
+            // Avoid duplication for Shadow Energy
             let attempts = 0;
             while ((secondEnergy && secondEnergy.includes(shadowEnergy) || shadowEnergy === energyYear) && attempts < 2) {
                 shadowEnergy = (shadowEnergy + yearSum) % 22;
+                challenges = shadowEnergy + yearSum;
+                if (challenges > 22) challenges = challenges - 22;
+                if (challenges < 0) challenges = Math.abs(challenges);
                 attempts++;
             }
 
             // Log for debugging
-            console.log(`Age: ${age}, Year: ${year}, YearSum: ${yearSum}, N: ${N}, OriginalN: ${originalN}, EnergyYear: ${energyYear}, SecondEnergy: ${secondEnergy}, Challenges: ${challenges}, ShadowEnergy: ${shadowEnergy}`);
+            console.log(`Age: ${age}, Year: ${year}, YearSum: ${yearSum}, N: ${N}, OriginalN: ${originalN}, EnergyYear: ${energyYear}, SecondEnergy: ${secondEnergy}, ShadowEnergy: ${shadowEnergy}, Challenges: ${challenges}`);
 
             // Build second energy display
             let secondEnergyDisplay = '';
@@ -217,8 +220,8 @@
                     ${arcana[challenges].meaning}</p>
                 </div>
                 <div class="section">
-                    <p><strong>Энергия тени:</strong> <span class="arcana">${arcana[shadowEnergy].name} (${shadowEnergy})</span><br>
-                    ${arcana[shadowEnergy].shadow}</p>
+                    <p><strong>Энергия тени:</strong> <span class="arcana">${arcana[shadowEnergy >= 0 ? shadowEnergy : Math.abs(shadowEnergy)].name} (${shadowEnergy >= 0 ? shadowEnergy : Math.abs(shadowEnergy)})</span><br>
+                    ${arcana[shadowEnergy >= 0 ? shadowEnergy : Math.abs(shadowEnergy)].shadow}</p>
                 </div>
                 <div class="section">
                     <p><strong>Потенциал богатства/успеха:</strong> ${energyYear === 10 || energyYear === 19 || energyYear === 21 || energyYear === 22 ? "Высокий потенциал богатства или успеха (как 'разбогател' для лидеров)." : "Успех через баланс, мудрость или стратегические решения, не мгновенная удача."}</p>
